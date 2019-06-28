@@ -15,11 +15,19 @@ Experiments should be designed to facilitate the detection of experimental measu
    a) Nodegame script
    b) PDF of the instructions that were presented on screen
    c) Authentication script used to limit the re-entry of participants (each subject could participate only once).
-2. **data** - CSV and raw exports for each of the four separate experiments
+2. **data** - CSV exports for each separate experiment:
+   * baseline_uk.csv - Lying behaviour lab experiment
+   * CESS_Panel_DS_Feb2018.csv - Lying behaviour CESS Online UK experiment
+   * lab_online_sync_edited.csv  - Lying behaviour lab online experiment
+   * Mturk_DS_Sept2017.csv - Lying behaviour Mturk online experiment
+   * mturk_exp.csv - India vignette experiment Mturk subjects
+   * mturk_exp_incentivised.csv - India vignette experiment Mturk subejcts with incentivisation
+   * co_exp.csv - India vignette experiment  CESS Online subjects
+
 3. **replication_scripts** - All R code for generation of statistics, tables and figures.
    * main_replication.R - main replication file
    * simulation_replication.R -  replication material for Figure 1
-   * indian_vignette_replication.R - replication material for experimental results incl. Tables 3, B4, and B5
+   * indian_vignette_replication.R - replication material for experimental results incl. Tables 3, B4, B5, and B6
 4. **screenshots** - of lab and online experiments
 5. **tables** - .tex files of tables in main article and appendix
 6. **figures** - image files of figures in main article and appendix
