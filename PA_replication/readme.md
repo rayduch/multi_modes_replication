@@ -21,8 +21,8 @@ Experiments should be designed to facilitate the detection of experimental measu
    * lab_online_sync_edited.csv  - Lying behaviour lab online experiment
    * Mturk_DS_Sept2017.csv - Lying behaviour Mturk online experiment
    * mturk_exp.csv - India vignette experiment Mturk subjects
-   * mturk_exp_incentivised.csv - India vignette experiment Mturk subejcts with incentivisation
-   * co_exp.csv - India vignette experiment  CESS Online subjects
+   * mturk_exp_incentivised.csv - India vignette experiment Mturk subjects with incentivisation
+   * co_exp.csv - India vignette experiment CESS Online subjects
 
 3. **replication_scripts** - All R code for generation of statistics, tables and figures.
    * main_replication.R - main replication file
