@@ -11,7 +11,7 @@ Last edit: June 2019
 2. simulation_replication.R
 3. indian_vignette_replication.R
 
-The majority of the replication code for this paper is found in main_replication.R. Code for the simulation in Section 2 (Figure 1) and the vignette experiment in Section 5 (Table 3) are stored in the two other replication scripts.
+The majority of the replication code for this paper is found in main_replication.R. Code for the simulation in Section 2 (Figure 1) and the vignette experiment in Section 5 (Table 3) are stored in separate replication scripts.
 
 The remainder of this guide walks through each section of the main replication file, to aid reproduction of the paper's results.
 
@@ -23,7 +23,7 @@ The working directory should be set to the main directory of this replication pa
 
 ## 0. Prerequisites
 
-Includes package initialisation and initial seed setting commands. The results in the code were run using the following package versions (latest releases as of 27 June 2019):
+Includes package initialisation and initial seed setting commands. The results in the code were run using the following package versions (latest releases as of 27 June 2019) using R version 3.6.0.:
 
 foreign_0.8-71
 broom_0.5.2
@@ -48,11 +48,9 @@ ltm_1.1-1
 wesanderson_0.3.6
 tidyverse_1.2.1
 
-Code run using R version 3.6.0.
-
 ## 1. Functions
 
-Functions required to execute aspects of the code:
+Functions required to execute aspects of the code:0o
 
 - *consist.risk* calculates the consistency of participants risk attitudes in experiment
 - *redist.fun* normalizes distribution of abilities
@@ -63,13 +61,13 @@ Functions required to execute aspects of the code:
 
 ## 2. Necessary data cleaning
 
-All original data files are included. This section runs the necessary data formatting and cleaning required to run the main analysis.
+All original data files are included. This section runs the necessary data formatting and cleaning required to run the main analysis, generating mode-specific dataframes (*baseline.uk*, *lab.online.sync*, *cess.online.panel*, and *mturk.ds*), and a combined dataframe of all four modes (*p.data*) used for the machine-learning procedure.
 
-*All* data-management code must be run. This generates the mode-specific dataframes and the combined *pdata* dataframe used for the machine-learning procedure.
+*All* data-management code must be run.
 
 ## 3. Descriptive statistics
 
-Descriptive statistics data generated for the lying experiment. NB: descriptive figures and tables produced as part of the Appendix are included in section X below.
+Descriptive statistics data generated for the lying experiment. NB: descriptive figures and tables produced as part of the Appendix are included in sections 6 and 7 below.
 
 ## 4. Tables
 

@@ -70,7 +70,7 @@ consist.risk<-function(df,name.risk){
 ## Normalise distribution - used in ability calculations
 redist.fun <- function(x){(x-min(x, na.rm = T))/diff(range(x, na.rm = T))}
 
-## Add brackets around rounded values, for Table 2 production
+## Add brackets around rounded values, for producing Table 2
 bracket <- function(vec) {
   for (i in 1:4){
     
@@ -137,6 +137,7 @@ icc_modes <- function(taxrate, auditrate, y) {
 # Credit: https://stats.stackexchange.com/questions/232252/intraclass-correlation-standard-error/232284
 icc_se <- function(data, taxrate,auditrate,var) {
   
+  # Subset data based on tax rate and auditrate passed to function
   if (auditrate == 0) {
     data <- data[data$taxrate == taxrate & data$auditRate == 0,]
   } else {
@@ -191,9 +192,8 @@ mturk.ds$age2[mturk.ds$age=="false"]<-NA
 mturk.ds$Age<-as.numeric(levels(mturk.ds$age2))[mturk.ds$age2]
 
 
-
-# Indentifying and Eliminating non-consistent risk preferences
-# Eliminating observations null risk and integrity ofvservations 
+# Identifying and eliminating non-consistent risk preferences
+# Eliminating observations null risk and integrity observations 
 # caused by the way the online experiment is coded
 cess.online.panel$risk.pref[cess.online.panel$risk.pref==0]<-NA
 mturk.ds$risk.pref[mturk.ds$risk.pref==0]<-NA
@@ -207,7 +207,6 @@ lab.online.sync$total.integrity[lab.online.sync$total.integrity==0]<-NA
 lab.online.sync<-consist.risk(lab.online.sync, "risk")
 mturk.ds<-consist.risk(mturk.ds, "risk")
 cess.online.panel<-consist.risk(cess.online.panel, "risk")
-
 
 #rename variables
 names(baseline.uk)[names(baseline.uk) == 'dec1'] <- 'Risk_1'
@@ -271,7 +270,7 @@ lab.online.sync$ncorrectret <- lab.online.sync$correct
 mturk.ds$ncorrectret<-mturk.ds$correct
 cess.online.panel$ncorrectret<-cess.online.panel$correct
 
-## Figures - Prep
+## Rename variables
 baseline.uk$muID<-paste0("baseline", baseline.uk$subj_id)
 names(baseline.uk)[names(baseline.uk)=="age_subject"] <- "Age"
 names(baseline.uk)[names(baseline.uk)=="safechoices"] <- "risk.pref"
@@ -291,6 +290,7 @@ names(cess.online.panel)[names(cess.online.panel)=="age"] <- "Age"
 names(cess.online.panel)[names(cess.online.panel)=="gender"] <- "Gender"
 names(cess.online.panel)[names(cess.online.panel)=="taxRate"] <- "taxrate"
 
+# Vector of variables used:
 vars<-c( "muID", "ncorrectret" ,"Gender", "Age", "DictGive" ,"DictGive.normal", "total.integrity", "total.integrity.normal", 
          "risk.pref.normal", "risk.pref", "prelimGain", "report.rate", "treat", "taxrate", "round","auditRate"
 )
@@ -311,13 +311,16 @@ p.data<-rbind(o.sync, b.s, mt.s, cp.s)
 # Assign unique subject IDs
 p.data$muID<-paste0(p.data$sample, p.data$muID)
 
+# Remove invalid audit rates
+p.data<-p.data[!is.na(p.data$auditRate),]
+
 # Remove temporary dataframes
 rm(o.sync, b.s, mt.s, cp.s)
 
 
-#### 3. Descriptive Statistics #### 
+#### 3. Descriptive Statistics (reported in the appendix) #### 
 
-## DS: Consistency in risk preferences
+## DS: Consistency in risk preferences 
 prop.table(table(baseline.uk$Consistent ))
 prop.table(table(lab.online.sync$Consistent))
 prop.table(table(mturk.ds$Consistent ))
@@ -325,17 +328,14 @@ prop.table(table(cess.online.panel$Consistent ))
 
 
 ## DS: Mean Give in dictator game
-p.data<-p.data[!is.na(p.data$auditRate),]
-
-
 ddply(p.data, ~ sample, summarize, 
       m.report = mean(DictGive, na.rm=T)
 )
 
+# Comparisons across modes/groups
 lab<-c( baseline.uk$DictGive, lab.online.sync$DictGive)
 others<-c(mturk.ds$DictGive, cess.online.panel$DictGive)
 
-# Students v non-students
 wilcox.test(lab, others,
             alternative = "two.sided",conf.level = 0.95)
 
@@ -599,6 +599,8 @@ test$treat.het <- ifelse(test$treat.het == 1,0,ifelse(test$treat.het == 0,1,NA))
 bart.out <- bart(x.train = train, y.train = y, x.test = test)
 
 # Recover CATE estimates and format into dataframe
+# Logic: Take predictions for those actually treated and minus counterfactual
+#        Then take counterfactually treated and deduct prediction for those actually in control
 CATE <- c(bart.out$yhat.train.mean[train$treat.het == 1] - bart.out$yhat.test.mean[test$treat.het == 0],
           bart.out$yhat.test.mean[test$treat.het == 1] - bart.out$yhat.train.mean[train$treat.het == 0])
 
